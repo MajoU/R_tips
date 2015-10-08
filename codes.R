@@ -6,4 +6,16 @@ df_NA_free <- dt[, colSums(is.na(df)) == 0]
 # how many 5 variables have each column in data frame?
 colSums(df == 5)
 
-
+# automatic discretization with package 'infotheo'
+library(infotheo)
+data(USArrests)
+# this code automatic discretize every column by 10 equal values
+nbins = 10
+ew.data <- discretize(USArrests,"equalwidth", nbins)
+# number of bins by square root
+nbins<- sqrt(NROW(USArrests))
+ew.data <- discretize(USArrests,"equalwidth", nbins)
+# for equal frequency for each bin (not very useful)
+ef.data <- discretize(USArrests,"equalfreq", nbins)
+# global bins for every column (good for similar values in columns)
+gew.data <- discretize(USArrests,"globalequalwidth", nbins)
