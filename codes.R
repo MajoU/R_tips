@@ -19,3 +19,14 @@ ew.data <- discretize(USArrests,"equalwidth", nbins)
 ef.data <- discretize(USArrests,"equalfreq", nbins)
 # global bins for every column (good for similar values in columns)
 gew.data <- discretize(USArrests,"globalequalwidth", nbins)
+
+# how to make histogram for every column in the data set
+library(reshape2)
+library(ggplot2)
+dt <- fread(..some csv)
+# doing rbind for every column
+# data frame must be cleaned by id values and repetitive column
+transform_data <- melt(dt)
+ggplot(transform_data, aes(x = value)) +
+    facet_wrap(~ variable,scales = "free_x") + 
+    geom_histogram()
