@@ -1,5 +1,9 @@
 dt <- fread(some_csv)
 
+# remove attributes with more than 95% NA values
+clean.dt <- dt[, unlist(lapply(dt, function(x) !sum(is.na(x)) >
+                               0.95*(nrow(dt)))), with=F]
+
 # removing every column that contains NA values
 df_NA_free <- dt[, colSums(is.na(df)) == 0]
 
