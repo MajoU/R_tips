@@ -4,6 +4,15 @@ dt <- fread(some_csv)
 clean.dt <- dt[, unlist(lapply(dt, function(x) !sum(is.na(x)) >
                                0.95*(nrow(dt)))), with=F]
 
+# extract columns as vector from data.table
+dt[['column_name']]
+# or
+name <- names(dt)
+dt[[name[1]]]
+
+# discretize every column in data.table by 5 equal parts !!! 
+dt <- dt[, lapply( .SD, function(x) cut2(x, g =5)), ]
+
 # removing every column that contains NA values
 df_NA_free <- dt[, colSums(is.na(df)) == 0]
 
