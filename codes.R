@@ -1,5 +1,9 @@
 dt <- fread(some_csv)
 
+# how many numeric columns is in the data.table?
+# numric is num and int
+counts = sum(unlist(dt[, lapply(.SD, is.numeric)]))
+
 # remove attributes with more than 95% NA values
 clean.dt <- dt[, unlist(lapply(dt, function(x) !sum(is.na(x)) >
                                0.95*(nrow(dt)))), with=F]
