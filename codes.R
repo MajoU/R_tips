@@ -4,14 +4,25 @@ dt <- fread(some_csv)
 clean.dt <- dt[, unlist(lapply(dt, function(x) !sum(is.na(x)) >
                                0.95*(nrow(dt)))), with=F]
 
+# chisq.test for every column (must NA omit each column for test)
+features <- lapply(dt, function(x) as.numeric(na.omit(x)))
+chi <- sapply(features, function(x) chisq.test(x))
+
 # extract columns as vector from data.table
 dt[['column_name']]
 # or
 name <- names(dt)
 dt[[name[1]]]
 
+# how to replace all NA in data.table to specific value?
+dt[is.na(dt)] <- 'null'
+dt[is.na(dt)] <- 0
+
 # discretize every column in data.table by 5 equal parts !!! 
 dt <- dt[, lapply( .SD, function(x) cut2(x, g =5)), ]
+
+# find differencies in two vectors (for example strings)
+setdiff(vector1, vector2)
 
 # removing every column that contains NA values
 df_NA_free <- dt[, colSums(is.na(df)) == 0]
@@ -21,6 +32,9 @@ dt[, lapply( .SD, as.factor), ]
 
 # how many 5 variables have each column in data frame?
 colSums(df == 5)
+
+# Unique values per column
+dt[, lapply(.SD, function(x) length(unique(x)))]
 
 # automatic discretization with package 'infotheo'
 library(infotheo)
