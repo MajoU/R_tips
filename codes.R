@@ -1,5 +1,16 @@
 dt <- fread(some_csv)
 
+# how to greatly describe data.table with all columns?
+library(Hmisc)
+describe(dt)
+
+# remove multiple columns by grep
+remove = c("col1", "col2", "col3")
+dt <- dt[, !grep(remove, names(test.cat), value=T), with = F]
+
+# multiple plot for every column finding correlation
+pairs(dt)
+
 # how many numeric columns is in the data.table?
 # numric is num and int
 counts = sum(unlist(dt[, lapply(.SD, is.numeric)]))
@@ -18,9 +29,16 @@ dt[['column_name']]
 name <- names(dt)
 dt[[name[1]]]
 
+# how to find NA values and replace it with 'NULL'?
+na <- all[, lapply(.SD, is.na)] # true false in NA for every row in all data.table
+invisible(lapply(seq(na), function(x) all[na[[x]], names(all)[x] := 'NULL']))
+
 # how to replace all NA in data.table to specific value?
 dt[is.na(dt)] <- 'null'
 dt[is.na(dt)] <- 0
+
+# how to replace NA in existing column to string "Others"
+dt[is.na(column), column := "Others"]
 
 # discretize every column in data.table by 5 equal parts !!! 
 dt <- dt[, lapply( .SD, function(x) cut2(x, g =5)), ]
@@ -32,10 +50,19 @@ setdiff(vector1, vector2)
 df_NA_free <- dt[, colSums(is.na(df)) == 0]
 
 # convert all columns into factor
-dt[, lapply( .SD, as.factor), ]
+dt <- dt[, lapply( .SD, as.factor), ]
 
 # how many 5 variables have each column in data frame?
 colSums(df == 5)
+
+# find all negative values in data.table - boolean
+dt[, lapply(dt, function(x) x < 0)]
+
+# how many negative values are in data.table columns?
+dt.num[, colSums(dt.num < 0, na.rm = T)]
+
+# where is negative values in data.table columns?
+dt.num[, colSums(dt.num < 0, na.rm = T) > 0]
 
 # Unique values per column
 dt[, lapply(.SD, function(x) length(unique(x)))]
