@@ -8,6 +8,19 @@ describe(dt)
 remove = c("col1", "col2", "col3")
 dt <- dt[, !grep(remove, names(test.cat), value=T), with = F]
 
+# how extract values from function into list - [[]] is important !!!
+feat <- list()
+for (i in 1:ncol(dt)) {feat[[i]] <- fun(dt[[i]], dt$target_event)}
+# or using lapply
+feat <- lapply(seq(dt), function(x) fun(dt[[x]], dt$target_event))
+
+# how to assign names from data.table into list 
+names(feat.list) <- names(dt) 
+
+# how to rename multiple variables into one variable in one column of data.table
+name <- c("name1", "name2", "name3")
+dt <- dt[ col1  %in% name, col1 := "hot authors"]
+
 # multiple plot for every column finding correlation
 pairs(dt)
 
@@ -22,6 +35,9 @@ clean.dt <- dt[, unlist(lapply(dt, function(x) !sum(is.na(x)) >
 # chisq.test for every column (must NA omit each column for test)
 features <- lapply(dt, function(x) as.numeric(na.omit(x)))
 chi <- sapply(features, function(x) chisq.test(x))
+
+# how to find differences in string names of two vectors?
+diff  <- setdiff(names(vector1), names(vector2))
 
 # extract columns as vector from data.table
 dt[['column_name']]
