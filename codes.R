@@ -4,8 +4,18 @@ dt <- fread(some_csv)
 library(Hmisc)
 describe(dt)
 
+# do table with percentage
+prop.table(table(dt$col1, dt$target))*100
+
+# find row index where all rows in data.table are NA
+rm.rows <- which(apply(all, 1, function(x) { all(is.na(x)) } ))
+
+# how to change all names in data.table - without 'count_'
+name <- gsub("count_", "", names(dt))
+setNames(dt, names(dt), name)
+
 # remove multiple columns by grep
-remove = c("col1", "col2", "col3")
+remove = c("col1|col2|col3")
 dt <- dt[, !grep(remove, names(test.cat), value=T), with = F]
 
 # how extract values from function into list - [[]] is important !!!
