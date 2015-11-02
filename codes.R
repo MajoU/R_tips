@@ -1,5 +1,21 @@
 dt <- fread(some_csv)
 
+# how to sort data.table by dates
+dt[order(time_column)]
+
+# perfect package for grouping data with selected attribute
+library(zoo)
+obj <- zoo(dt$feature, dt$target_event) # obj is "zoo" class
+
+
+# how to select date in some period of time?
+dt[as.Date(time) > "2015-09-24" & as.Date(time) < "2015-10-15", ]
+
+# select first 10 row by each unique variable in column (by date)
+best <- do.call(rbind, lapply(split(dt, dt$time), head, 10))
+# or
+best <- ddply(dt, .(time), function(x) head(x, 10))
+
 # how to greatly describe data.table with all columns?
 library(Hmisc)
 describe(dt)
