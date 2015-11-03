@@ -3,6 +3,15 @@ dt <- fread(some_csv)
 # how to sort data.table by dates
 dt[order(time_column)]
 
+# great crossTable wit package Rz
+library(Rz)
+tab <- crossTable(test$target_event, dt$col1)
+summary(tab)
+
+# how to make Cross Table? By SAS library(gmodels) like a table function
+library(gmodels)
+CrossTable(dt$target_event, dt$col1)
+
 # perfect package for grouping data with selected attribute
 library(zoo)
 obj <- zoo(dt$feature, dt$target_event) # obj is "zoo" class
