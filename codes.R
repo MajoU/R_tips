@@ -7,7 +7,6 @@ dt[order(time_column)]
 library(zoo)
 obj <- zoo(dt$feature, dt$target_event) # obj is "zoo" class
 
-
 # how to select date in some period of time?
 dt[as.Date(time) > "2015-09-24" & as.Date(time) < "2015-10-15", ]
 
