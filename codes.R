@@ -3,14 +3,23 @@ dt <- fread(some_csv)
 # how to sort data.table by dates
 dt[order(time_column)]
 
-# great crossTable wit package Rz
-library(Rz)
-tab <- crossTable(test$target_event, dt$col1)
-summary(tab)
+# cross table with package descr
+library(descr)
+tab <- crosstab(dt$target_event, dt$col1, prop.c = T, dnn = c("target", "col1"))
+library(xtable)
+print(xtable(tab), booktabs = T) # convert crosstab to latex code
 
 # how to make Cross Table? By SAS library(gmodels) like a table function
 library(gmodels)
-CrossTable(dt$target_event, dt$col1)
+CrossTable(dt$target_event, dt$col1, dnn = c("target", "col1"), format = "SPSS")
+# save cross table
+capture.output(CrossTable(dt$target_event, dt$col1), file = "output.txt")
+
+# hot to make cross table by prop.table? 2 condition is crucial
+tab <- prop.table(table(dt$target_event, dt$col1), 2)*100
+extract <- unlist(as.list(tab))
+# every second value
+extract <- extract[c(FALSE, TRUE)]
 
 # perfect package for grouping data with selected attribute
 library(zoo)
