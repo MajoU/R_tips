@@ -3,6 +3,13 @@ dt <- fread(some_csv)
 # how to sort data.table by dates
 dt[order(time_column)]
 
+# convert negative values to 0 in data.table as matrix
+dt <- apply(dt, 2, function(x) {ifelse(x < 0, 0, x)
+
+# read multiple files in multiple directories
+files <- dir("data/purchase", recursive = T, full.names = T, patter="\\.json$")
+js.data <- lapply(files, function(x) stream_in(file(x)))
+
 # cross table with package descr
 library(descr)
 tab <- crosstab(dt$target_event, dt$col1, prop.c = T, dnn = c("target", "col1"))
